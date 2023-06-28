@@ -4,12 +4,15 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Evgeny", "Noi", , "noi@ucsb.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7914-1548"))
-Description: The package simplifies data collection and data processing 
-pipelines for the ENDOW project. The code can be re-used to collect a series 
-of gespatial variables for a given point on Earth. 
+Description: The package simplifies data collection and data processing pipelines for the ENDOW project. The code can be re-used to collect a series of gespatial variables for a given point on Earth. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
     sf
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+URL: https://github.com/barguzin/endow
+BugReports: https://github.com/barguzin/endow/issues
