@@ -28,6 +28,7 @@ Extract Raster
 \examples{
 pts = make_point("my_site", 45, 45)
 pts_buff = make_buffer(pts, 5000)
-r = rast(fpath)
+fpath = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
+r = terra::rast(fpath)
 e = extract_raster(r, pts_buff)
 }

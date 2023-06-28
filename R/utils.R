@@ -50,7 +50,8 @@ make_buffer <- function(sf_obj, dist=5000) {
 #' @examples
 #' pts = make_point("my_site", 45, 45)
 #' pts_buff = make_buffer(pts, 5000)
-#' r = rast(fpath)
+#' fpath = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
+#' r = terra::rast(fpath)
 #' e = extract_raster(r, pts_buff)
 extract_raster <- function(rast, clip_vec, func_name=mean) {
   e = terra::extract(rast, clip_vec, fun=func_name, na.rm=T)
