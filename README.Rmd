@@ -33,7 +33,7 @@ devtools::install_github("barguzin/endow")
 
 Endow package provides a series of utility functions to simplify data collection:
 
-```{r example}
+```{r example, warning=FALSE}
 library(endow)
 ## basic example code
 
