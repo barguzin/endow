@@ -23,7 +23,7 @@ make_point <- function(idvar, lon, lat) {
 #' @param sf_obj a simple feature dataframe
 #' @param dist (int) distance in meters to draw a buffer around
 #'
-#' @return
+#' @return buffer of an sf_obj
 #' @export
 #'
 #' @examples
@@ -44,10 +44,14 @@ make_buffer <- function(sf_obj, dist=5000) {
 #' @param clip_vec - vector (typically an sf data.frame)
 #' @param func_name - function to summarize extracted values (default=MEAN)
 #'
-#' @return
+#' @return dataframe with summarized values
 #' @export
 #'
 #' @examples
+#' pts = make_point("my_site", 45, 45)
+#' pts_buff = make_buffer(pts, 5000)
+#' r = rast(fpath)
+#' e = extract_raster(r, pts_buff)
 extract_raster <- function(rast, clip_vec, func_name=mean) {
   e = terra::extract(rast, clip_vec, fun=func_name, na.rm=T)
   return(e)
