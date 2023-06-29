@@ -42,6 +42,8 @@ make_buffer <- function(sf_obj, dist=5000) {
 #'
 #' @param rast - raster object (use terra)
 #' @param clip_vec - vector (typically an sf data.frame)
+#' @param var_name - char (variable name for summary purposes)
+#' @param dist - int (distance in meters which was used for a buffer)
 #' @param func_name - function to summarize extracted values (default=MEAN)
 #'
 #' @return dataframe with summarized values
@@ -52,8 +54,10 @@ make_buffer <- function(sf_obj, dist=5000) {
 #' pts_buff = make_buffer(pts, 5000)
 #' fpath = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
 #' r = terra::rast(fpath)
-#' e = extract_raster(r, pts_buff)
-extract_raster <- function(rast, clip_vec, func_name=mean) {
-  e = terra::extract(rast, clip_vec, fun=func_name, na.rm=T)
+#' e = extract_raster(r, pts_buff, var_name='my_variable', dist=5000)
+extract_raster <- function(rast, clip_vec, var_name, dist, func_name=mean) {
+  e = terra::extract(rast, clip_vec, var_name, fun=func_name, na.rm=T)
+  colnames(e) <- c('id_var', var_name)
+  e$dist <- dist
   return(e)
 }
