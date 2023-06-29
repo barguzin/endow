@@ -61,3 +61,25 @@ extract_raster <- function(rast, clip_vec, var_name, dist, func_name=mean) {
   e$dist <- dist
   return(e)
 }
+
+#' Create directories for data
+#'
+#' This script should only be run once to generate a separate directory per each site.
+#'
+#'--- dir_to_save /
+#'                --- site_A /
+#'                --- site_B /
+#'
+#' @param dir_to_save (char) path to save data onto
+#' @param id_variable (char) name of variable with identifier of a site
+#'
+#' @return None
+#' @export
+#'
+#' @examples
+#' create_filedirs('/my/new/folder/', 'var_of_interest')
+create_filedirs <- function(dir_to_save, id_variable) {
+  dir_name = paste0(dir_to_save, id_variable, '/')
+  print(dir_name)
+  dir.create(dir_name, recursive=T)
+}
