@@ -4,10 +4,10 @@
 \alias{make_point}
 \title{Make Point}
 \usage{
-make_point(idvar, lon, lat)
+make_point(site_id, lon, lat)
 }
 \arguments{
-\item{idvar}{(id variable associated with a geographic point)}
+\item{site_id}{(id variable associated with a geographic point)}
 
 \item{lon}{(longitude in decimal degrees)}
 

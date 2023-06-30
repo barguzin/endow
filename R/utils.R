@@ -1,6 +1,6 @@
 #' Make Point
 #'
-#' @param idvar (id variable associated with a geographic point)
+#' @param site_id (id variable associated with a geographic point)
 #' @param lon (longitude in decimal degrees)
 #' @param lat (latitude in decimal degrees)
 #'
@@ -12,9 +12,9 @@
 #' y = 45
 #' my_id = 'MM'
 #' make_point(my_id, x, y)
-make_point <- function(idvar, lon, lat) {
+make_point <- function(site_id, lon, lat) {
   geom = sf::st_sfc(sf::st_point(c(lon, lat)))
-  my_sf = sf::st_sf(id_var = idvar, geom, crs='epsg:4326')
+  my_sf = sf::st_sf(id_var = site_id, geom, crs='epsg:4326')
   return(my_sf)
 }
 
@@ -62,7 +62,7 @@ extract_raster <- function(rast, clip_vec, var_name, dist, func_name=mean) {
   return(e)
 }
 
-#' Create directories for data
+#' Generate directories for data
 #'
 #' This script should only be run once to generate a separate directory per each site.
 #'
@@ -71,15 +71,17 @@ extract_raster <- function(rast, clip_vec, var_name, dist, func_name=mean) {
 #'                --- site_B /
 #'
 #' @param dir_to_save (char) path to save data onto
-#' @param id_variable (char) name of variable with identifier of a site
+#' @param site_id (char) name of variable with identifier of a site
+#' @param var_name (char) variable name (aka souce, e.g. 'night_light')
 #'
-#' @return None
+#' @return dir_name (directory path)
 #' @export
 #'
 #' @examples
-#' create_filedirs('/my/new/folder/', 'var_of_interest')
-create_filedirs <- function(dir_to_save, id_variable) {
-  dir_name = paste0(dir_to_save, id_variable, '/')
+#' generate_filedirs('/my/new/folder/', site_id='AH', var_name='var_of_interest')
+generate_filedirs <- function(dir_to_save, site_id, var_name) {
+  dir_name = paste0(dir_to_save, site_id, '/', var_name, '/')
   print(dir_name)
   dir.create(dir_name, recursive=T)
+  return(dir_name)
 }
