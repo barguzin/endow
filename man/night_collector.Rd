@@ -22,5 +22,5 @@ The function collects the data give an input raster and a coordinate.
 \examples{
 # Kumasi coordinates: 6.695016860965001, -1.6179580414855728
 rast_path = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
-f = night_collector(rast_path, '/my_folder/', site_id='AH', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+f = night_collector(rast_path, '/my_folder/', site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
 }
