@@ -4,12 +4,16 @@
 \alias{collector}
 \title{Collector}
 \usage{
-collector(raster_path, path_to_save, ...)
+collector(raster_path, path_to_save, year, year_var, ...)
 }
 \arguments{
 \item{raster_path}{(char) a path to an input raster to be processed}
 
 \item{path_to_save}{(char) a directory to store the processed rasters}
+
+\item{year}{(int) for year-specific data, input a year for a raster file}
+
+\item{year_var}{date variable associated with each site}
 
 \item{...}{other arguments from endow.utils functions}
 }
@@ -21,6 +25,9 @@ The function collects the data give an input raster and a coordinate.
 }
 \examples{
 # Kumasi coordinates: 6.695016860965001, -1.6179580414855728
-rast_path = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
-f = collector(rast_path, '/my_folder/', site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+rast_path = system.file("extdata", "africa_cropland_netgain.tif",
+package="endow")
+f = collector(rast_path, '/my_folder/', year=2017,
+year_var=as.POSIXct('2020-01-01 14:45:18', format="\%Y-\%m-\%d \%H:\%M:\%S",
+tz="UTC"), site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
 }

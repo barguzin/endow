@@ -4,6 +4,8 @@
 #'
 #' @param raster_path (char) a path to an input raster to be processed
 #' @param path_to_save (char) a directory to store the processed rasters
+#' @param year (int) for year-specific data, input a year for a raster file
+#' @param year_var date variable associated with each site
 #' @param ... other arguments from endow.utils functions
 #'
 #' @return None. Saves clipped rasters and processed csv files to /processed.
@@ -11,9 +13,16 @@
 #'
 #' @examples
 #'# Kumasi coordinates: 6.695016860965001, -1.6179580414855728
-#'rast_path = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
-#'f = collector(rast_path, '/my_folder/', site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
-collector <- function(raster_path, path_to_save, ...) {
+#'rast_path = system.file("extdata", "africa_cropland_netgain.tif",
+#' package="endow")
+#'f = collector(rast_path, '/my_folder/', year=2017,
+#' year_var=as.POSIXct('2020-01-01 14:45:18', format="%Y-%m-%d %H:%M:%S",
+#' tz="UTC"), site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+collector <- function(raster_path, path_to_save, year, year_var, ...) {
+
+  y = lubridate::year(year_var)
+
+  if (y!=year) {print('supplied year and Wave 1 Start year are not equal!')}
 
   r = terra::rast(raster_path)
 
@@ -37,14 +46,26 @@ collector <- function(raster_path, path_to_save, ...) {
   vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
   print(paste('creating directory in', vdir))
   dir.create(vdir, recursive = T)
-  terra::writeRaster(cropped_raster, paste0(vdir, d$site_id, '_', d$var_name,'.tif'), overwrite=T)
+
+  if (year) {
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', year,'.tif')
+  } else {
+    fdir = paste0(vdir, d$site_id, '_', d$var_name,'.tif')
+  }
+
+  terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
   # extract summary statistics
   e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
 
+  if (year) {
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', year,'.csv')
+  } else {
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name,'.csv')
+  }
+
   # save csv
-  readr::write_csv(e, paste0(vdir, d$site_id, '_', d$var_name,'.csv'),
-            col_names = F)
+  readr::write_csv(e, fdir_csv, col_names = F)
 
   #return(vdir)
 }
