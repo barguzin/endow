@@ -23,7 +23,12 @@ collector <- function(raster_path, path_to_save, year, year_var, ...) {
 
   y = lubridate::year(year_var)
 
-  if (y!=year) {print('supplied year and Wave 1 Start year are not equal!')}
+  if (is.na(y)) {
+    print('No year specified in Wave 1 Start variable. Consider adding.')
+  }
+  else if (y!=year) {
+    print('supplied year and Wave 1 Start year are not equal!')
+    }
 
   r = terra::rast(raster_path)
 
