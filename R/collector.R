@@ -14,10 +14,11 @@
 #' @examples
 #'# Kumasi coordinates: 6.695016860965001, -1.6179580414855728
 #'rast_path = system.file("extdata", "africa_cropland_netgain.tif",
-#' package="endow")
+#'  package="endow")
 #'f = collector(rast_path, '/my_folder/', year=2017,
-#' year_var=as.POSIXct('2020-01-01 14:45:18', format="%Y-%m-%d %H:%M:%S",
-#' tz="UTC"), site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+#'  year_var=as.POSIXct('2020-01-01 14:45:18',
+#'  format="%Y-%m-%d %H:%M:%S",tz="UTC"),
+#'  site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
 collector <- function(raster_path, path_to_save, year, year_var, ...) {
 
   y = lubridate::year(year_var)
