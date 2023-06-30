@@ -12,8 +12,8 @@
 #' @examples
 #'# Kumasi coordinates: 6.695016860965001, -1.6179580414855728
 #'rast_path = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
-#'f = night_collector(rast_path, '/my_folder/', site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
-night_collector <- function(raster_path, path_to_save, ...) {
+#'f = collector(rast_path, '/my_folder/', site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+collector <- function(raster_path, path_to_save, ...) {
 
   r = terra::rast(raster_path)
 
