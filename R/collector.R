@@ -39,7 +39,12 @@ collector <- function(raster_path, path_to_save, ...) {
   dir.create(vdir, recursive = T)
   terra::writeRaster(cropped_raster, paste0(vdir, d$site_id, '_', d$var_name,'.tif'), overwrite=T)
 
-  # save csv
+  # extract summary statistics
+  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
 
-  return(vdir)
+  # save csv
+  readr::write_csv(e, paste0(vdir, d$site_id, '_', d$var_name,'.csv'),
+            col_names = F)
+
+  #return(vdir)
 }
