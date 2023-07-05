@@ -53,10 +53,10 @@ collector <- function(raster_path, path_to_save, year, year_var, ...) {
   print(paste('creating directory in', vdir))
   dir.create(vdir, recursive = T)
 
-  if (year) {
-    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', year,'.tif')
+  if (missing(year)) {
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', year, '.tif')
   } else {
-    fdir = paste0(vdir, d$site_id, '_', d$var_name,'.tif')
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '.tif')
   }
 
   terra::writeRaster(cropped_raster, fdir, overwrite=T)
@@ -64,7 +64,7 @@ collector <- function(raster_path, path_to_save, year, year_var, ...) {
   # extract summary statistics
   e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
 
-  if (year) {
+  if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', year,'.csv')
   } else {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name,'.csv')
