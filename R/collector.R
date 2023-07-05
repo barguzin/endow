@@ -54,7 +54,7 @@ collector <- function(raster_path, path_to_save, year, year_var, ...) {
   dir.create(vdir, recursive = T)
 
   if (missing(year)) {
-    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', year, '.tif')
+    fdir = paste0(vdir, '/', year, '/', d$site_id, '_', d$var_name, '_', year, '.tif')
   } else {
     fdir = paste0(vdir, d$site_id, '_', d$var_name, '.tif')
   }
@@ -65,7 +65,7 @@ collector <- function(raster_path, path_to_save, year, year_var, ...) {
   e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
 
   if (missing(year)) {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', year,'.csv')
+    fdir_csv = paste0(vdir, '/', year, '/', d$site_id, '_', d$var_name, '_', year,'.csv')
   } else {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name,'.csv')
   }
