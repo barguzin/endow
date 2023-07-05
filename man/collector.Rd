@@ -4,7 +4,7 @@
 \alias{collector}
 \title{Collector}
 \usage{
-collector(raster_path, path_to_save, year, year_var, ...)
+collector(raster_path, path_to_save, year = NULL, year_var = NULL, ...)
 }
 \arguments{
 \item{raster_path}{(char) a path to an input raster to be processed}

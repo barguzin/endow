@@ -19,16 +19,19 @@
 #'  year_var=as.POSIXct('2020-01-01 14:45:18',
 #'  format="%Y-%m-%d %H:%M:%S",tz="UTC"),
 #'  site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
-collector <- function(raster_path, path_to_save, year, year_var, ...) {
+collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) {
 
-  y = lubridate::year(year_var)
+  if (!missing(year_var)) {
+    y = lubridate::year(year_var)
 
-  if (is.na(y)) {
-    print('No year specified in Wave 1 Start variable. Consider adding.')
-  }
-  else if (y!=year) {
-    print('supplied year and Wave 1 Start year are not equal!')
+    if (is.na(y)) {
+      print('No year specified in Wave 1 Start variable. Consider adding.')
     }
+    else if (y!=year) {
+      print('supplied year and Wave 1 Start year are not equal!')
+    }
+
+  }
 
   r = terra::rast(raster_path)
 
@@ -49,25 +52,34 @@ collector <- function(raster_path, path_to_save, year, year_var, ...) {
   if (is.nan(c)){print('empty raster returned after cropping')}
 
   # save clipped raster
-  vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
+  if (missing(year)) {
+    print('No year supplied to function.')
+    vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
+  } else {
+    print('non missing year')
+    vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
+  }
+
+
   print(paste('creating directory in', vdir))
   dir.create(vdir, recursive = T)
 
   if (missing(year)) {
-    fdir = paste0(vdir, '/', year, '/', d$site_id, '_', d$var_name, '_', year, '.tif')
-  } else {
     fdir = paste0(vdir, d$site_id, '_', d$var_name, '.tif')
+  } else {
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', year, '.tif')
   }
 
+  print(paste('saving raster to', fdir))
   terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
   # extract summary statistics
   e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
 
   if (missing(year)) {
-    fdir_csv = paste0(vdir, '/', year, '/', d$site_id, '_', d$var_name, '_', year,'.csv')
-  } else {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name,'.csv')
+  } else {
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', year,'.csv')
   }
 
   # save csv
