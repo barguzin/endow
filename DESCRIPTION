@@ -14,7 +14,12 @@ Imports:
     lubridate,
     magrittr,
     sf,
-    terra
+    terra,
+    stars, 
+    dplyr, 
+    tibble,
+    abind, 
+    cubelyr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

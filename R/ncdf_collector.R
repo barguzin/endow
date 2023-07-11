@@ -1,25 +1,22 @@
-#' Collector
+#' NCDF collector
 #'
-#' The function collects the data give an input raster and a coordinate.
+#' @param ncdf_path - path to ncdf file
+#' @param path_to_save - save directory
+#' @param year - year to process the data for
+#' @param year_var - year with wave 1 start date
+#' @param ... - any other params
 #'
-#' @param raster_path (char) a path to an input raster to be processed
-#' @param path_to_save (char) a directory to store the processed rasters
-#' @param year (int) for year-specific data, input a year for a raster file
-#' @param year_var date variable associated with each site
-#' @param ... other arguments from endow.utils functions
-#'
-#' @return None. Saves clipped rasters and processed csv files to /processed.
+#' @return Writes files to disk. No return value.
 #' @export
 #'
 #' @examples
-#'# Kumasi coordinates: 6.695016860965001, -1.6179580414855728
-#'rast_path = system.file("extdata", "africa_cropland_netgain.tif",
+#' ncdf_path = system.file("extdata", "world_soil_moisture_jan2016.nc",
 #'  package="endow")
-#'f = collector(rast_path, '/my_folder/', year=2017,
+#'f = ncdf_collector(ncdf_path, '/my_folder/', year=2016,
 #'  year_var=as.POSIXct('2020-01-01 14:45:18',
 #'  format="%Y-%m-%d %H:%M:%S",tz="UTC"),
-#'  site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
-collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) {
+#'  site_id='KU', lon=-1.62, lat=6.7, dist=30000, var_name='soil_moisture')
+ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL, ...){
 
   if (!missing(year_var)) {
     y = lubridate::year(year_var)
@@ -33,7 +30,8 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
 
   }
 
-  r = terra::rast(raster_path)
+  r = stars::read_stars(ncdf_path)
+  r = sf::st_set_crs(r, 'EPSG:4326')
 
   d = list(...)
 
@@ -43,13 +41,16 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   # create a buffer within specified distance
   coords_buffer = make_buffer(pt, dist=d$dist)
 
-  # crop a raster to the buffer
-  cropped_raster = terra::crop(r, coords_buffer)
+  # crop
+  bofr = r[coords_buffer]
 
-  # check for empty raster (usually coordinates over ocean)
-  c = terra::global(cropped_raster, fun=mean, na.rm=T)$mean
+  # aggregate from monthly to yearly
+  agg_bofr = stars:::aggregate.stars(bofr, by = "1 year", FUN = mean, na.rm=T)
 
-  if (is.nan(c)){print('empty raster returned after cropping')}
+  # check if cropped raster is empty
+  if (sum(is.na(agg_bofr$sm))/length(agg_bofr$sm)==1) {
+    print('Raster is empty')
+  }
 
   # save clipped raster
   if (missing(year)) {
@@ -70,10 +71,19 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   }
 
   print(paste('saving raster to', fdir))
-  terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
-  # extract summary statistics
-  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
+  # subset data by year
+  bofr_year = agg_bofr %>%
+    dplyr::filter(lubridate::year(time)==year) %>%
+    dplyr::select(sm) %>%
+    abind::adrop()
+
+  stars::write_stars(bofr_year, fdir, drive='GTiff')
+
+  # prep yearly data as table
+  e = mean(bofr_year$sm, na.rm=T)
+
+  tbl = tibble::as_tibble_row(list(year = year, var_name = e))
 
   if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
@@ -82,7 +92,6 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   }
 
   # save csv
-  readr::write_csv(e, fdir_csv, col_names = F)
+  readr::write_csv(tbl, fdir_csv, col_names = F)
 
-  #return(vdir)
 }
