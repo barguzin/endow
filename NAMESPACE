@@ -2,6 +2,7 @@
 
 export("%>%")
 export(collector)
+export(expand_radius)
 export(extract_raster)
 export(generate_filedirs)
 export(make_buffer)

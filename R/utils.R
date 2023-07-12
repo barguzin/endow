@@ -85,3 +85,62 @@ generate_filedirs <- function(dir_to_save, site_id, var_name) {
   dir.create(dir_name, recursive=T)
   return(dir_name)
 }
+
+
+#' Expand radius
+#'
+#' For data with patchy / sparse coverage iteratively increase buffer
+#' distance, until the ratio of non-null values hits the threshhold
+#'
+#' @param stars_obj description
+#' @param cropped_stars cropped stars object (sf)
+#' @param var_name variable for which sparsity is considered (char)
+#' @param dist distance in meters
+#' @param na_ratio ratio of NA values (0, 1)
+#' @param step_size step size in meters
+#' @param pnt an sf object with point geometry (build from site coords)
+#'
+#' @return cropped raster/ncdf
+#' @export
+#'
+#' @examples
+#'
+#' lng = -1.62
+#' lat = 6.7
+#' dist = 5000
+#' ss_id = 'KI'
+#'
+#' pnt = make_point(lon = lng, lat = lat, site_id=ss_id)
+#' buff = make_buffer(pnt, dist)
+#'
+#' ncdf_path = system.file("extdata", "world_soil_moisture_jan2016.nc",
+#'  package="endow")
+#'
+#' s = stars::read_stars(ncdf_path)
+#'
+#' s = sf::st_set_crs(s, 'EPSG:4326')
+#'
+#' c = expand_radius(s, s[buff], var_name='sm', dist=dist, na_ratio=.5,
+#'  step_size=5000, pnt=pnt)
+#'
+expand_radius <- function(stars_obj, cropped_stars, var_name, dist, na_ratio=.5,
+                          step_size=5000, pnt) {
+
+  d = dist
+  start_na_ratio = sum(is.na(cropped_stars[[var_name]]))/length(cropped_stars[[var_name]])
+
+  while (start_na_ratio>na_ratio & d<100000) {
+
+    d = dist + step_size
+
+    new_buff = make_buffer(pnt, d)
+
+    clipper = stars_obj[new_buff]
+
+    start_na_ratio = sum(is.na(clipper[[var_name]]))/length(clipper[[var_name]])
+
+  }
+
+  return(clipper)
+
+}
