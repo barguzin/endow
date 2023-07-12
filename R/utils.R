@@ -94,7 +94,7 @@ generate_filedirs <- function(dir_to_save, site_id, var_name) {
 #'
 #' @param stars_obj description
 #' @param cropped_stars cropped stars object (sf)
-#' @param var_name variable for which sparsity is considered (char)
+#' @param attr_name attribute name for which sparsity is considered (char)
 #' @param dist distance in meters
 #' @param na_ratio ratio of NA values (0, 1)
 #' @param step_size step size in meters
@@ -120,14 +120,14 @@ generate_filedirs <- function(dir_to_save, site_id, var_name) {
 #'
 #' s = sf::st_set_crs(s, 'EPSG:4326')
 #'
-#' c = expand_radius(s, s[buff], var_name='sm', dist=dist, na_ratio=.5,
+#' c = expand_radius(s, s[buff], attr_name='sm', dist=dist, na_ratio=.5,
 #'  step_size=5000, pnt=pnt)
 #'
-expand_radius <- function(stars_obj, cropped_stars, var_name, dist, na_ratio=.5,
+expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.5,
                           step_size=5000, pnt) {
 
   d = dist
-  start_na_ratio = sum(is.na(cropped_stars[[var_name]]))/length(cropped_stars[[var_name]])
+  start_na_ratio = sum(is.na(cropped_stars[[attr_name]]))/length(cropped_stars[[attr_name]])
 
   while (start_na_ratio>na_ratio & d<100000) {
 
@@ -137,7 +137,7 @@ expand_radius <- function(stars_obj, cropped_stars, var_name, dist, na_ratio=.5,
 
     clipper = stars_obj[new_buff]
 
-    start_na_ratio = sum(is.na(clipper[[var_name]]))/length(clipper[[var_name]])
+    start_na_ratio = sum(is.na(clipper[[attr_name]]))/length(clipper[[attr_name]])
 
   }
 

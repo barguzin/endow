@@ -7,7 +7,7 @@
 expand_radius(
   stars_obj,
   cropped_stars,
-  var_name,
+  attr_name,
   dist,
   na_ratio = 0.5,
   step_size = 5000,
@@ -19,7 +19,7 @@ expand_radius(
 
 \item{cropped_stars}{cropped stars object (sf)}
 
-\item{var_name}{variable for which sparsity is considered (char)}
+\item{attr_name}{attribute name for which sparsity is considered (char)}
 
 \item{dist}{distance in meters}
 
@@ -53,7 +53,7 @@ s = stars::read_stars(ncdf_path)
 
 s = sf::st_set_crs(s, 'EPSG:4326')
 
-c = expand_radius(s, s[buff], var_name='sm', dist=dist, na_ratio=.5,
+c = expand_radius(s, s[buff], attr_name='sm', dist=dist, na_ratio=.5,
  step_size=5000, pnt=pnt)
 
 }
