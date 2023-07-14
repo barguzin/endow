@@ -9,7 +9,7 @@ expand_radius(
   cropped_stars,
   attr_name,
   dist,
-  na_ratio = 0.5,
+  na_ratio = 0.25,
   step_size = 5000,
   pnt
 )
@@ -30,7 +30,7 @@ expand_radius(
 \item{pnt}{an sf object with point geometry (build from site coords)}
 }
 \value{
-cropped raster/ncdf
+list w 2 elements: cropped raster/ncdf and dist
 }
 \description{
 For data with patchy / sparse coverage iteratively increase buffer
@@ -53,7 +53,9 @@ s = stars::read_stars(ncdf_path)
 
 s = sf::st_set_crs(s, 'EPSG:4326')
 
-c = expand_radius(s, s[buff], attr_name='sm', dist=dist, na_ratio=.5,
+b = s[buff]
+
+c = expand_radius(s, b, attr_name='sm', dist=dist, na_ratio=.5,
  step_size=5000, pnt=pnt)
 
 }

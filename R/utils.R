@@ -100,7 +100,7 @@ generate_filedirs <- function(dir_to_save, site_id, var_name) {
 #' @param step_size step size in meters
 #' @param pnt an sf object with point geometry (build from site coords)
 #'
-#' @return cropped raster/ncdf
+#' @return list w 2 elements: cropped raster/ncdf and dist
 #' @export
 #'
 #' @examples
@@ -120,27 +120,35 @@ generate_filedirs <- function(dir_to_save, site_id, var_name) {
 #'
 #' s = sf::st_set_crs(s, 'EPSG:4326')
 #'
-#' c = expand_radius(s, s[buff], attr_name='sm', dist=dist, na_ratio=.5,
+#' b = s[buff]
+#'
+#' c = expand_radius(s, b, attr_name='sm', dist=dist, na_ratio=.5,
 #'  step_size=5000, pnt=pnt)
 #'
-expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.5,
+expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.25,
                           step_size=5000, pnt) {
 
   d = dist
   start_na_ratio = sum(is.na(cropped_stars[[attr_name]]))/length(cropped_stars[[attr_name]])
 
-  while (start_na_ratio>na_ratio & d<100000) {
+  print(d)
+  print(start_na_ratio)
 
-    d = dist + step_size
+  while (na_ratio<start_na_ratio & d<100000) {
+
+    d = d + step_size
 
     new_buff = make_buffer(pnt, d)
 
     clipper = stars_obj[new_buff]
 
     start_na_ratio = sum(is.na(clipper[[attr_name]]))/length(clipper[[attr_name]])
+    print(start_na_ratio)
+
+    lom = list('buff_ncdf' = clipper, 'dist' = d)
+
+    return(lom)
 
   }
-
-  return(clipper)
 
 }

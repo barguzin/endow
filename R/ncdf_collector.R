@@ -44,8 +44,16 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL, ..
   # crop
   bofr = r[coords_buffer]
 
+  bo_di = expand_radius(r, bofr, 'sm', d$dist, na_ratio=.5,
+                        step_size=5000, pt)
+
+  #bofr = bo_di$buff_ncdf
+  new_bofr = bo_di$buff_ncdf
+
+  d$dist = bo_di$dist
+
   # aggregate from monthly to yearly
-  agg_bofr = stars:::aggregate.stars(bofr, by = "1 year", FUN = mean, na.rm=T)
+  agg_bofr = stars:::aggregate.stars(new_bofr, by = "1 year", FUN = mean, na.rm=T)
 
   # check if cropped raster is empty
   if (sum(is.na(agg_bofr$sm))/length(agg_bofr$sm)==1) {
