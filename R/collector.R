@@ -34,6 +34,7 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   }
 
   r = terra::rast(raster_path)
+  r = terra::project(r, "EPSG:4326")
 
   d = list(...)
 
