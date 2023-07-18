@@ -134,9 +134,14 @@ expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.2
   print(d)
   print(start_na_ratio)
 
-  while (na_ratio>start_na_ratio & d<100000) {
+  if (start_na_ratio>na_ratio) {
+    lom = list('buff_ncdf' = cropped_stars, 'dist' = dist)
+  }
+
+  while (start_na_ratio<na_ratio & d<100000) {
 
     d = d + step_size
+    print('---running expansion---')
 
     new_buff = make_buffer(pnt, d)
 
@@ -147,8 +152,10 @@ expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.2
 
     lom = list('buff_ncdf' = clipper, 'dist' = d)
 
-    return(lom)
+    #return(lom)
 
   }
+
+  return(lom)
 
 }
