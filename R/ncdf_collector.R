@@ -76,6 +76,8 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
     # save empty csv
     tbl = tibble::as_tibble_row(list(year = year, var_name = d$var_name))
 
+    print(paste('tbl:', tbl))
+
     readr::write_csv(tbl, fdir_csv, col_names = F)
 
   } else {
@@ -98,6 +100,8 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
     e = mean(bofr_year$sm, na.rm=T)
 
     tbl = tibble::as_tibble_row(list(year = year, var_name = e))
+
+    print(paste('tbl:', tbl))
 
     # save csv
     readr::write_csv(tbl, fdir_csv, col_names = F)
