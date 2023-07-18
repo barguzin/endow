@@ -134,7 +134,7 @@ expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.2
   print(d)
   print(start_na_ratio)
 
-  while (na_ratio<start_na_ratio & d<100000) {
+  while (na_ratio>start_na_ratio & d<100000) {
 
     d = d + step_size
 
