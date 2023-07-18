@@ -56,6 +56,27 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
   # aggregate from monthly to yearly
   agg_bofr = stars:::aggregate.stars(new_bofr, by = "1 year", FUN = mean, na.rm=T)
 
+  # save clipped raster
+  if (missing(year)) {
+    print('No year supplied to function.')
+    vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
+  } else {
+    print('non missing year')
+    vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
+  }
+
+  if (missing(year)) {
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
+  } else {
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
+  }
+
+  if (missing(year)) {
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.tif')
+  } else {
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.tif')
+  }
+
   # check if cropped raster is empty
   if (sum(is.na(agg_bofr$sm))/length(agg_bofr$sm)==1) {
     print('Raster is empty')
@@ -67,23 +88,9 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
 
   } else {
 
-    # save clipped raster
-    if (missing(year)) {
-      print('No year supplied to function.')
-      vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
-    } else {
-      print('non missing year')
-      vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
-    }
 
     print(paste('creating directory in', vdir))
     dir.create(vdir, recursive = T)
-
-    if (missing(year)) {
-      fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.tif')
-    } else {
-      fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.tif')
-    }
 
     print(paste('saving raster to', fdir))
 
@@ -99,12 +106,6 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
     e = mean(bofr_year$sm, na.rm=T)
 
     tbl = tibble::as_tibble_row(list(year = year, var_name = e))
-
-    if (missing(year)) {
-      fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
-    } else {
-      fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
-    }
 
     # save csv
     readr::write_csv(tbl, fdir_csv, col_names = F)
