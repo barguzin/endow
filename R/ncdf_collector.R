@@ -61,7 +61,7 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
     print('Raster is empty')
 
     # save empty csv
-    tbl = tibble::as_tibble_row(list(year = year, var_name = var_name))
+    tbl = tibble::as_tibble_row(list(year = year, var_name = d$var_name))
 
     readr::write_csv(tbl, fdir_csv, col_names = F)
 
