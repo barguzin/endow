@@ -142,7 +142,7 @@ expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.2
 
     clipper = stars_obj[new_buff]
 
-    start_na_ratio = sum(is.na(clipper[[attr_name]]))/length(clipper[[attr_name]])
+    start_na_ratio = 1 - sum(!is.na(cropped_stars[[attr_name]]))/length(cropped_stars[[attr_name]])
     print(start_na_ratio)
 
     lom = list('buff_ncdf' = clipper, 'dist' = d)
