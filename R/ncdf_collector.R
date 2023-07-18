@@ -60,21 +60,13 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
   if (missing(year)) {
     print('No year supplied to function.')
     vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
+    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.tif')
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
   } else {
     print('non missing year')
     vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
-  }
-
-  if (missing(year)) {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
-  } else {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
-  }
-
-  if (missing(year)) {
-    fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.tif')
-  } else {
     fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.tif')
+    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
   }
 
   # check if cropped raster is empty
