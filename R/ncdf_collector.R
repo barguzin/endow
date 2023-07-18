@@ -19,17 +19,17 @@
 ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
                            ...){
 
-  if (!missing(year_var)) {
-    y = lubridate::year(year_var)
-
-    if (is.na(y)) {
-      print('No year specified in Wave 1 Start variable. Consider adding.')
-    }
-    else if (y!=year) {
-      print('supplied year and Wave 1 Start year are not equal!')
-    }
-
-  }
+  # if (!missing(year_var)) {
+  #   y = lubridate::year(year_var)
+  #
+  #   if (is.na(y)) {
+  #     print('No year specified in Wave 1 Start variable. Consider adding.')
+  #   }
+  #   else if (y!=year) {
+  #     print('supplied year and Wave 1 Start year are not equal!')
+  #   }
+  #
+  # }
 
   r = stars::read_stars(ncdf_path)
   r = sf::st_set_crs(r, 'EPSG:4326')
