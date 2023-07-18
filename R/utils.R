@@ -129,7 +129,7 @@ expand_radius <- function(stars_obj, cropped_stars, attr_name, dist, na_ratio=.2
                           step_size=5000, pnt) {
 
   d = dist
-  start_na_ratio = sum(is.na(cropped_stars[[attr_name]]))/length(cropped_stars[[attr_name]])
+  start_na_ratio = 1 - sum(!is.na(cropped_stars[[attr_name]]))/length(cropped_stars[[attr_name]])
 
   print(d)
   print(start_na_ratio)
