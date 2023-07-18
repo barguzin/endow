@@ -89,20 +89,20 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
 
     stars::write_stars(bofr_year, fdir, drive='GTiff')
 
+    # prep yearly data as table
+    e = mean(bofr_year$sm, na.rm=T)
+
+    tbl = tibble::as_tibble_row(list(year = year, var_name = e))
+
+    if (missing(year)) {
+      fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
+    } else {
+      fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
+    }
+
+    # save csv
+    readr::write_csv(tbl, fdir_csv, col_names = F)
+
   }
-
-  # prep yearly data as table
-  e = mean(bofr_year$sm, na.rm=T)
-
-  tbl = tibble::as_tibble_row(list(year = year, var_name = e))
-
-  if (missing(year)) {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
-  } else {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
-  }
-
-  # save csv
-  readr::write_csv(tbl, fdir_csv, col_names = F)
 
 }
