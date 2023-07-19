@@ -1,6 +1,6 @@
 Package: endow
-Title: A series of functions for ENDOW data collection
-Version: 0.0.0.9000
+Title: A series of functions for ENDOW data collection project
+Version: 0.0.1.0000
 Authors@R: 
     person("Evgeny", "Noi", , "noi@ucsb.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7914-1548"))
@@ -19,7 +19,8 @@ Imports:
     dplyr, 
     tibble,
     abind, 
-    cubelyr
+    cubelyr, 
+    stringr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
