@@ -187,6 +187,7 @@ ncdf_to_tif <- function(ncdf_path, attr_name, year, fname) {
   r = sf::st_set_crs(r, 'EPSG:4326')
 
   # aggregate if necessary
+  print('aggregating file by year')
   agg_bofr = stars:::aggregate.stars(r, by = "1 year", FUN = mean, na.rm=T)
 
   # subset data by year
@@ -208,6 +209,7 @@ ncdf_to_tif <- function(ncdf_path, attr_name, year, fname) {
 
   # compile path
   save_path = paste0(dir_path, '/', fname, '_', year, '.tif')
+  print(paste('saving file to: ', save_path))
 
   # save to tiff
   stars::write_stars(bofr_year, save_path, layer=attr_name, drive='GTiff')
