@@ -58,16 +58,23 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
 
   # save clipped raster
   if (missing(year)) {
+
     print('No year supplied to function.')
     vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
     fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.tif')
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
+
   } else {
+
     print('non missing year')
     vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
     fdir = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.tif')
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
+
   }
+
+  print(paste('creating directory in', vdir))
+  dir.create(vdir, recursive = T)
 
   # check if cropped raster is empty
   if (sum(is.na(agg_bofr$sm))/length(agg_bofr$sm)==1) {
@@ -81,10 +88,6 @@ ncdf_collector <- function(ncdf_path, path_to_save, year=NULL, year_var=NULL,
     readr::write_csv(tbl, fdir_csv, col_names = F)
 
   } else {
-
-
-    print(paste('creating directory in', vdir))
-    dir.create(vdir, recursive = T)
 
     print(paste('saving raster to', fdir))
 
