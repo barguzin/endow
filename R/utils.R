@@ -195,8 +195,16 @@ ncdf_to_tif <- function(ncdf_path, attr_name, year, fname) {
     dplyr::select(attr_name) %>%
     abind::adrop()
 
-  # get the directory from ncdf to store in the same dir
-  dir_path = stringr::str_extract(ncdf_path, ".+(?=\\/)")
+  # check lenght of ncdf_path (for file collections)
+  if (length(ncdf_path)>0) {
+
+    dir_path = stringr::str_extract(ncdf_path[1], ".+(?=\\/)")
+
+  } else {
+    # get the directory from ncdf to store in the same dir
+    dir_path = stringr::str_extract(ncdf_path, ".+(?=\\/)")
+  }
+
 
   # compile path
   save_path = paste0(dir_path, '/', fname, '_', year, 'tif')
