@@ -207,7 +207,7 @@ ncdf_to_tif <- function(ncdf_path, attr_name, year, fname) {
 
 
   # compile path
-  save_path = paste0(dir_path, '/', fname, '_', year, 'tif')
+  save_path = paste0(dir_path, '/', fname, '_', year, '.tif')
 
   # save to tiff
   stars::write_stars(bofr_year, save_path, layer=attr_name, drive='GTiff')
