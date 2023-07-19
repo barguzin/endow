@@ -190,6 +190,7 @@ ncdf_to_tif <- function(ncdf_path, attr_name, year, fname) {
   print('aggregating file by year')
   agg_bofr = stars:::aggregate.stars(r, by = "1 year", FUN = mean, na.rm=T)
 
+  print('subsetting and filtering data')
   # subset data by year
   bofr_year = agg_bofr %>%
     dplyr::filter(lubridate::year(time)==year) %>%
