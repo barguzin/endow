@@ -34,7 +34,11 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   }
 
   r = terra::rast(raster_path)
-  r = terra::project(r, "EPSG:4326")
+
+  # check for projection and reproject
+  if (terra::crs(r, describe=T, proj=T)$code[1] != "4326") {
+    r = terra::project(r, "EPSG:4326")
+  } else {print('raster is in EPSG:4326 crs')}
 
   d = list(...)
 
