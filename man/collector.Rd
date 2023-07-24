@@ -4,12 +4,21 @@
 \alias{collector}
 \title{Collector}
 \usage{
-collector(raster_path, path_to_save, year = NULL, year_var = NULL, ...)
+collector(
+  raster_path,
+  path_to_save,
+  FUN = mean,
+  year = NULL,
+  year_var = NULL,
+  ...
+)
 }
 \arguments{
 \item{raster_path}{(char) a path to an input raster to be processed}
 
 \item{path_to_save}{(char) a directory to store the processed rasters}
+
+\item{FUN}{function to pass for summary}
 
 \item{year}{(int) for year-specific data, input a year for a raster file}
 

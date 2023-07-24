@@ -44,7 +44,7 @@ make_buffer <- function(sf_obj, dist=5000) {
 #' @param clip_vec - vector (typically an sf data.frame)
 #' @param var_name - char (variable name for summary purposes)
 #' @param dist - int (distance in meters which was used for a buffer)
-#' @param func_name - function to summarize extracted values (default=MEAN)
+#' @param FUN - function to summarize extracted values (default=MEAN)
 #'
 #' @return dataframe with summarized values
 #' @export

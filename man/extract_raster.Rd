@@ -23,7 +23,7 @@ extract_raster(rast, clip_vec, var_name, dist, FUN = mean)
 \item int (distance in meters which was used for a buffer)
 }}
 
-\item{func_name}{\itemize{
+\item{FUN}{\itemize{
 \item function to summarize extracted values (default=MEAN)
 }}
 }

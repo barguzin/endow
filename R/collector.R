@@ -6,6 +6,7 @@
 #' @param path_to_save (char) a directory to store the processed rasters
 #' @param year (int) for year-specific data, input a year for a raster file
 #' @param year_var date variable associated with each site
+#' @param FUN function to pass for summary
 #' @param ... other arguments from endow.utils functions
 #'
 #' @return None. Saves clipped rasters and processed csv files to /processed.
@@ -80,9 +81,8 @@ collector <- function(raster_path, path_to_save, FUN=mean, year=NULL, year_var=N
   terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
 
-
   # extract summary statistics
-  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
+  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist, FUN=FUN)
 
   if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
