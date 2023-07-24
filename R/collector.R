@@ -78,7 +78,8 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
   # extract summary statistics
-  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
+  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist,
+                     func_name=d$func_name)
 
   if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
