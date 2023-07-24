@@ -4,7 +4,7 @@
 \alias{extract_raster}
 \title{Extract Raster}
 \usage{
-extract_raster(rast, clip_vec, var_name, dist, func_name = mean)
+extract_raster(rast, clip_vec, var_name, dist, FUN = mean)
 }
 \arguments{
 \item{rast}{\itemize{
@@ -38,5 +38,5 @@ pts = make_point("my_site", 45, 45)
 pts_buff = make_buffer(pts, 5000)
 fpath = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
 r = terra::rast(fpath)
-e = extract_raster(r, pts_buff, var_name='my_variable', dist=5000)
+e = extract_raster(r, pts_buff, var_name='my_variable', dist=5000, FUN=sum)
 }

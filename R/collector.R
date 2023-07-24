@@ -18,7 +18,9 @@
 #'f = collector(rast_path, '/my_folder/', year=2017,
 #'  year_var=as.POSIXct('2020-01-01 14:45:18',
 #'  format="%Y-%m-%d %H:%M:%S",tz="UTC"),
-#'  site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+#'  site_id='KU',
+#'  FUN='sum',
+#'  lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
 collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) {
 
   if (!missing(year_var)) {
@@ -77,9 +79,10 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, ...) 
   print(paste('saving raster to', fdir))
   terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
+
+
   # extract summary statistics
-  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist,
-                     func_name=d$func_name)
+  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist)
 
   if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')

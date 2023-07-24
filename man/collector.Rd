@@ -30,5 +30,7 @@ rast_path = system.file("extdata", "africa_cropland_netgain.tif",
 f = collector(rast_path, '/my_folder/', year=2017,
  year_var=as.POSIXct('2020-01-01 14:45:18',
  format="\%Y-\%m-\%d \%H:\%M:\%S",tz="UTC"),
- site_id='KU', lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+ site_id='KU',
+ FUN='sum',
+ lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
 }

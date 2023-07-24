@@ -54,9 +54,13 @@ make_buffer <- function(sf_obj, dist=5000) {
 #' pts_buff = make_buffer(pts, 5000)
 #' fpath = system.file("extdata", "africa_cropland_netgain.tif", package="endow")
 #' r = terra::rast(fpath)
-#' e = extract_raster(r, pts_buff, var_name='my_variable', dist=5000)
-extract_raster <- function(rast, clip_vec, var_name, dist, func_name=mean) {
-  e = terra::extract(rast, clip_vec, var_name, fun=func_name, na.rm=T)
+#' e = extract_raster(r, pts_buff, var_name='my_variable', dist=5000, FUN=sum)
+extract_raster <- function(rast, clip_vec, var_name, dist, FUN=mean) {
+
+  FUN <- match.fun(FUN)
+
+  e = terra::extract(rast, clip_vec, var_name, fun=FUN, na.rm=T)
+
   colnames(e) <- c('id_var', var_name)
   e$dist <- dist
   return(e)
