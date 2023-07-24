@@ -7,9 +7,9 @@
 collector(
   raster_path,
   path_to_save,
-  FUN = mean,
   year = NULL,
   year_var = NULL,
+  FUN = mean,
   ...
 )
 }
@@ -18,11 +18,11 @@ collector(
 
 \item{path_to_save}{(char) a directory to store the processed rasters}
 
-\item{FUN}{function to pass for summary}
-
 \item{year}{(int) for year-specific data, input a year for a raster file}
 
 \item{year_var}{date variable associated with each site}
+
+\item{FUN}{function to pass for summary}
 
 \item{...}{other arguments from endow.utils functions}
 }

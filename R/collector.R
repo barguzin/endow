@@ -22,7 +22,7 @@
 #'  site_id='KU',
 #'  FUN='sum',
 #'  lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
-collector <- function(raster_path, path_to_save, FUN=mean, year=NULL, year_var=NULL, ...) {
+collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, FUN=mean, ...) {
 
   if (!missing(year_var)) {
     y = lubridate::year(year_var)
