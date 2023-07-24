@@ -82,7 +82,12 @@ collector <- function(raster_path, path_to_save, FUN=mean, year=NULL, year_var=N
 
 
   # extract summary statistics
-  e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist, FUN=FUN)
+  #e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist, FUN=FUN)
+
+  FUN <- match.fun(FUN)
+  e = terra::extract(r, coords_buffer, d$var_name, fun=FUN, na.rm=T)
+  colnames(e) <- c('id_var', d$var_name)
+  e$dist <- d$dist
 
   if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
