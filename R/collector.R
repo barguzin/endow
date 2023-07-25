@@ -6,7 +6,7 @@
 #' @param path_to_save (char) a directory to store the processed rasters
 #' @param year (int) for year-specific data, input a year for a raster file
 #' @param year_var date variable associated with each site
-#' @param FUN function to pass for summary
+#' @param summary_fun function to pass for summary
 #' @param ... other arguments from endow.utils functions
 #'
 #' @return None. Saves clipped rasters and processed csv files to /processed.
@@ -22,7 +22,8 @@
 #'  site_id='KU',
 #'  FUN='sum',
 #'  lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
-collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, FUN=mean, ...) {
+collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
+                      summary_fun='mean', ...) {
 
   if (!missing(year_var)) {
     y = lubridate::year(year_var)
@@ -82,12 +83,20 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL, FUN=m
 
 
   # extract summary statistics
-  #e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist, FUN=FUN)
+  if (summary_fun=='mean') {
+    e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist,
+                       summary_fun=mean)
+  }
 
-  FUN <- match.fun(FUN)
-  e = terra::extract(r, coords_buffer, d$var_name, fun=FUN, na.rm=T)
-  colnames(e) <- c('id_var', d$var_name)
-  e$dist <- d$dist
+  if (summary_fun=='sum') {
+    e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist,
+                       summary_fun=sum)
+  }
+
+  #FUN <- match.fun(FUN)
+  #e = terra::extract(r, coords_buffer, d$var_name, fun=FUN, na.rm=T)
+  #colnames(e) <- c('id_var', d$var_name)
+  #e$dist <- d$dist
 
   if (missing(year)) {
     fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')

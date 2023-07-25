@@ -9,7 +9,7 @@ collector(
   path_to_save,
   year = NULL,
   year_var = NULL,
-  FUN = mean,
+  summary_fun = "mean",
   ...
 )
 }
@@ -22,7 +22,7 @@ collector(
 
 \item{year_var}{date variable associated with each site}
 
-\item{FUN}{function to pass for summary}
+\item{summary_fun}{function to pass for summary}
 
 \item{...}{other arguments from endow.utils functions}
 }
