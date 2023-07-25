@@ -86,9 +86,7 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   if (summary_fun=='mean') {
     e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist,
                        summary_fun=mean)
-  }
-
-  if (summary_fun=='sum') {
+  } else if (summary_fun=='sum') {
     e = extract_raster(r, coords_buffer, var_name=d$var_name, dist=d$dist,
                        summary_fun=sum)
   }
