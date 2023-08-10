@@ -28,7 +28,7 @@ collection. Typically, the pipeline is set in a following way:
 ```mermaid
 flowchart LR
     pnt[sf object]
-    buff[polygon]
+    buff[buffer]
     rast[global raster]
     site[site location]
     crop[cropped raster]
@@ -36,7 +36,9 @@ flowchart LR
 
     site--site_id, lon, lat---pnt--dist---buff--aggregate---summ
 
-    buff & rast--terra--> crop
+    rast--crop--> crop
+    buff--crop--> crop
+    crop-->summ
 
 
 ```
