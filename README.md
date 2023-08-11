@@ -53,16 +53,18 @@ my_point = endow::make_point("site A", lon=45, lat=45)
 # create a buffer 
 my_buffer = endow::make_buffer(my_point, dist=5000) # dist in meters 
 
+# the file containing site names and their coordinates
 df = read.csv(path_to_file) 
 
+# the global raster file that will be cropped 
 pop2000 = 'file/path/to/raster.tiff'
 
+# apply the function from endow with params
 mapply(endow::collector, pop2000, 'dir/to/save/processed', 
        year=2000, 
        year_var = df$start, 
        site_id = df$end, 
        lon=df$lng, lat=df$lat, dist=5000, 
        var_name='raster_var')
-
 
 ```
