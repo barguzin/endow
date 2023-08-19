@@ -23,11 +23,8 @@ Calculates distance to population center
 # Kumasi coordinates: 6.695016860965001, -1.6179580414855728
 pp = system.file('extdata', 'world_cities.csv', package='endow')
 
-f = get_dist_to_pop(pp, '/my_folder/', year=2017,
- year_var=as.POSIXct('2020-01-01 14:45:18',
- format="\%Y-\%m-\%d \%H:\%M:\%S",tz="UTC"),
+f = get_dist_to_pop(pp, '/my_folder/',
  site_id='KU',
- FUN='sum',
  lon=-1.62, lat=6.7,
  var_name='cropland')
 
