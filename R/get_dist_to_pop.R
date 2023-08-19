@@ -50,7 +50,7 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
     SiteCode = d$site_id,
     dist_to_pop = min_dist,
     CityName = wc[pos, "CITY_NAME"]$CITY_NAME,
-    CityPop = world_cities[pos, "POP"]$POP)
+    CityPop = wc[pos, "POP"]$POP)
 
   colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 
