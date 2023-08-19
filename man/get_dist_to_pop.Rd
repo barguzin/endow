@@ -7,6 +7,10 @@
 get_dist_to_pop(cities_path, path_to_save, ...)
 }
 \arguments{
+\item{cities_path}{(char) a path to file with cities}
+
+\item{path_to_save}{(char) a path to save procesed data}
+
 \item{...}{}
 }
 \value{

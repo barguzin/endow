@@ -1,7 +1,7 @@
 #' Calculates distance to population center
 #'
-#' @param cities_path
-#' @param path_to_save
+#' @param cities_path (char) a path to file with cities
+#' @param path_to_save (char) a path to save procesed data
 #' @param ...
 #'
 #' @return None. Saves files to the 'processed' directory.
@@ -33,11 +33,12 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
                options=c("X_POSSIBLE_NAMES=X","Y_POSSIBLE_NAMES=Y"),
                crs=4326)
 
-  gc_dist = st_distance(pt, wc, which='Great Circle')
+  gc_dist = sf::st_distance(pt, wc, which='Great Circle')
 
   min_dist = as.vector(gc_dist[,which.min(gc_dist)])
+  pos = which.min(gc_dist)
 
-  vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
+  vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
 
   print(paste('creating directory in', vdir))
   dir.create(vdir, recursive = T)
@@ -47,8 +48,12 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   # create a dataframe to be saved
   e <- data.frame(
     SiteCode = d$site_id,
-    dist_to_pop = min_dist)
+    dist_to_pop = min_dist,
+    CityName = wc[pos, "CITY_NAME"]$CITY_NAME,
+    CityPop = world_cities[pos, "POP"]$POP)
 
-  readr::write_csv(e, fdir_csv, col_names = F)
+  colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
+
+  readr::write_csv(e, fdir_csv)
 
 }
