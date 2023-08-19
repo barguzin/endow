@@ -28,6 +28,7 @@ f = get_dist_to_pop(pp, '/my_folder/', year=2017,
  format="\%Y-\%m-\%d \%H:\%M:\%S",tz="UTC"),
  site_id='KU',
  FUN='sum',
- lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+ lon=-1.62, lat=6.7,
+ var_name='cropland')
 
 }

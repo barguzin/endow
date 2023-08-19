@@ -16,7 +16,8 @@
 #'  format="%Y-%m-%d %H:%M:%S",tz="UTC"),
 #'  site_id='KU',
 #'  FUN='sum',
-#'  lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+#'  lon=-1.62, lat=6.7,
+#'  var_name='cropland')
 #'
 get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
@@ -24,9 +25,6 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
   # generate a point for a site
   pt = make_point(d$site_id, d$lon, d$lat)
-
-  # create a buffer within specified distance
-  coords_buffer = make_buffer(pt, dist=d$dist)
 
   # read in cities data with coordinates
   wc = sf::st_read(cities_path,
@@ -43,7 +41,7 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   print(paste('creating directory in', vdir))
   dir.create(vdir, recursive = T)
 
-  fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
+  fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', 'm', '.csv')
 
   # create a dataframe to be saved
   e <- data.frame(
