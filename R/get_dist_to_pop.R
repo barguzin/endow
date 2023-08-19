@@ -46,11 +46,11 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   # create a dataframe to be saved
   e <- data.frame(
     SiteCode = d$site_id,
-    dist_to_pop = min_dist,
+    DistancePop = min_dist,
     CityName = wc[pos, "CITY_NAME"]$CITY_NAME,
     CityPop = wc[pos, "POP"]$POP)
 
-  colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
+  #colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 
   readr::write_csv(e, fdir_csv)
 
