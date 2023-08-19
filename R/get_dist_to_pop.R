@@ -1,4 +1,4 @@
-#' Title
+#' Calculates distance to population center
 #'
 #' @param cities_path
 #' @param path_to_save
@@ -8,6 +8,16 @@
 #' @export
 #'
 #' @examples
+#'# Kumasi coordinates: 6.695016860965001, -1.6179580414855728
+#'pp = system.file('extdata', 'world_cities.csv', package='endow')
+#'
+#'f = get_dist_to_pop(pp, '/my_folder/', year=2017,
+#'  year_var=as.POSIXct('2020-01-01 14:45:18',
+#'  format="%Y-%m-%d %H:%M:%S",tz="UTC"),
+#'  site_id='KU',
+#'  FUN='sum',
+#'  lon=-1.62, lat=6.7, dist=6000, var_name='cropland')
+#'
 get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
   d = list(...)
@@ -19,7 +29,26 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   coords_buffer = make_buffer(pt, dist=d$dist)
 
   # read in cities data with coordinates
-  df = st_read(cities_path,
-               options=c("X_POSSIBLE_NAMES=X","Y_POSSIBLE_NAMES=Y"))
+  wc = sf::st_read(cities_path,
+               options=c("X_POSSIBLE_NAMES=X","Y_POSSIBLE_NAMES=Y"),
+               crs=4326)
+
+  gc_dist = st_distance(pt, wc, which='Great Circle')
+
+  min_dist = as.vector(gc_dist[,which.min(gc_dist)])
+
+  vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
+
+  print(paste('creating directory in', vdir))
+  dir.create(vdir, recursive = T)
+
+  fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
+
+  # create a dataframe to be saved
+  e <- data.frame(
+    SiteCode = d$site_id,
+    dist_to_pop = min_dist)
+
+  readr::write_csv(e, fdir_csv, col_names = F)
 
 }
