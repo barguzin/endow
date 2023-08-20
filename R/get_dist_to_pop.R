@@ -50,8 +50,8 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   e <- data.frame(
     SiteCode = d$site_id,
     DistancePop = min_dist,
-    CityName = cn, #ifelse(is.null(cn), NA, cn),
-    CityPop = cp) #ifelse(is.null(cp), NA, cp))
+    CityName = paste(cn), #ifelse(is.null(cn), NA, cn),
+    CityPop = paste(cp)) #ifelse(is.null(cp), NA, cp))
 
   #colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 
