@@ -59,8 +59,8 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
   print(paste(dim(e)))
 
-  e$CityName = cn
-  e$CityPop = cp
+  e$CityName = as.character(cn)
+  e$CityPop = as.numeric(cp)
 
   #colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 
