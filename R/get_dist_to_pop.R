@@ -40,12 +40,15 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
   fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', 'm', '.csv')
 
+  cn = wc[pos, "CITY_NAME"]$CITY_NAME
+  cp = wc[pos, "POP"]$POP
+
   # create a dataframe to be saved
   e <- data.frame(
     SiteCode = d$site_id,
     DistancePop = min_dist,
-    CityName = wc[pos, "CITY_NAME"]$CITY_NAME,
-    CityPop = wc[pos, "POP"]$POP)
+    CityName = ifelse(is.null(cn), NA, cn),
+    CityPop = ifelse(is.null(cp), NA, cp))
 
   #colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 
