@@ -41,7 +41,10 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', 'm', '.csv')
 
   cn = wc[pos, "CITY_NAME"]$CITY_NAME
+  print(cn)
+
   cp = wc[pos, "POP"]$POP
+  print(cp)
 
   # create a dataframe to be saved
   e <- data.frame(
