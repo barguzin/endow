@@ -42,9 +42,13 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
   cn = wc[pos, "CITY_NAME"]$CITY_NAME
   print(paste('city name is', cn))
+  print(typeof(cn))
+  print(length(cn))
 
   cp = wc[pos, "POP"]$POP
   print(paste('city population is', cp))
+  print(typeof(cp))
+  print(length(cp))
 
   # create a dataframe to be saved
   e <- data.frame(
@@ -52,6 +56,8 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
     DistancePop = min_dist) #,
     #CityName = paste(cn), #ifelse(is.null(cn), NA, cn),
     #CityPop = paste(cp)) #ifelse(is.null(cp), NA, cp))
+
+  print(paste(dim(e)))
 
   e$CityName = cn
   e$CityPop = cp
