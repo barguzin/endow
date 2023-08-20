@@ -51,16 +51,15 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   print(length(cp))
 
   # create a dataframe to be saved
-  e <- data.frame(
+  e <- tibble::tibble(
     SiteCode = d$site_id,
-    DistancePop = min_dist) #,
-    #CityName = paste(cn), #ifelse(is.null(cn), NA, cn),
-    #CityPop = paste(cp)) #ifelse(is.null(cp), NA, cp))
+    DistancePop = min_dist,
+    CityName = paste(cn), #ifelse(is.null(cn), NA, cn),
+    CityPop = paste(cp)) #ifelse(is.null(cp), NA, cp))
 
-  print(paste(dim(e)))
-
-  e$CityName = as.character(cn)
-  e$CityPop = as.numeric(cp)
+  #print(paste(dim(e)))
+  #e$CityName = as.character(cn)
+  #e$CityPop = as.numeric(cp)
 
   #colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 

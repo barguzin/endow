@@ -3,6 +3,7 @@ library(devtools)
 install_github('barguzin/endow')
 library(endow)
 library(tmap)
+library(tidyverse)
 
 world_cities = st_read('C:/Users/barguzin/Downloads/World_Cities.csv',
              options=c("X_POSSIBLE_NAMES=X","Y_POSSIBLE_NAMES=Y"), crs=4326)
@@ -41,7 +42,7 @@ print(sum(world_cities$POP==0))
 cnam = world_cities[pos, "CITY_NAME"]$CITY_NAME
 cpop = world_cities[pos, "POP"]$POP
 
-e <- data.frame(
+e <- tibble(
   SiteCode = "KK",
   dist_to_pop = m,
   #CityName = world_cities[pos, "CITY_NAME"]$CITY_NAME,
