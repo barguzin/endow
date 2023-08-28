@@ -69,8 +69,7 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
                      xmax = st_bbox(coords_buffer)$xmax[[1]],
                      ymin = st_bbox(coords_buffer)$ymin[[1]],
                      ymax = st_bbox(coords_buffer)$ymax[[1]])
-    rr = terra::project(rr, 'epsg:4326')
-    return(rr)
+    cc = terra::project(rr, 'epsg:4326')
   }
   )
 
