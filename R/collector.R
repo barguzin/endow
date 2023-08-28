@@ -59,7 +59,20 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   coords_buffer = make_buffer(pt, dist=d$dist)
 
   # crop a raster to the buffer
-  cropped_raster = terra::crop(r, coords_buffer)
+  cropped_raster = tryCatch( {
+    cc = terra::crop(r, coords_buffer)
+  },
+  error=function(e) {
+    message(e)
+    rr = terra::rast(nrows=10, ncols=10,
+                     xmin = st_bbox(coords_buffer)$xmin[[1]],
+                     xmax = st_bbox(coords_buffer)$xmax[[1]],
+                     ymin = st_bbox(coords_buffer)$ymin[[1]],
+                     ymax = st_bbox(coords_buffer)$ymax[[1]])
+    rr = terra::project(rr, 'epsg:4326')
+    return(rr)
+  }
+  )
 
   # check for empty raster (usually coordinates over ocean)
   c = terra::global(cropped_raster, fun=mean, na.rm=T)$mean
