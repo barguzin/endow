@@ -62,7 +62,7 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   cropped_raster = tryCatch( {
     cc = terra::crop(r, coords_buffer)
   },
-  error=function(e) {
+  error = function(e) {
     message(e)
     rr = terra::rast(nrows=10, ncols=10,
                      xmin = st_bbox(coords_buffer)$xmin[[1]],
@@ -74,7 +74,14 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   )
 
   # check for empty raster (usually coordinates over ocean)
-  c = terra::global(cropped_raster, fun=mean, na.rm=T)$mean
+  c = tryCatch( {
+    cc = terra::global(cropped_raster, fun=mean, na.rm=T)$mean
+  },
+  error = function(e) {
+    message(e)
+    cc = NA
+  }
+  )
 
   if (is.nan(c)){print('empty raster returned after cropping')}
 
