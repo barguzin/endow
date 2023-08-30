@@ -104,8 +104,13 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   }
 
   print(paste('saving raster to', fdir))
-  terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
+  if (terra::hasValues(cropped_raster)) {
+    terra::writeRaster(cropped_raster, fdir, overwrite=T)
+  } else {
+    cropped_raster = terra::subst(cropped_raster, NA, -9999)
+    terra::writeRaster(cropped_raster, fdir, overwrite=T)
+    }
 
   # extract summary statistics
   if (summary_fun=='mean') {
