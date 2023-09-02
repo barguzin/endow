@@ -39,10 +39,16 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
 
   r = terra::rast(raster_path)
 
+  ###################################
+  ### --- PROJECTION HANDLING --- ###
   # check for projection and reproject
-  if (terra::crs(r, describe=T, proj=T)$code[1] != "4326") {
+
+  if (is.na(terra::crs(r, describe=T, proj=T)$code[1])) {
     r = terra::project(r, "EPSG:4326")
-  } else {print('raster is in EPSG:4326 crs')}
+  } else if (terra::crs(r, describe=T, proj=T)$code[1] != "4326") {
+    r = terra::project(r, "EPSG:4326")
+  }
+  else {print('raster is in EPSG:4326 crs')}
 
   d = list(...)
 
@@ -53,10 +59,29 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   coords_buffer = make_buffer(pt, dist=d$dist)
 
   # crop a raster to the buffer
-  cropped_raster = terra::crop(r, coords_buffer)
+  cropped_raster = tryCatch( {
+    cc = terra::crop(r, coords_buffer)
+  },
+  error = function(e) {
+    message(e)
+    rr = terra::rast(nrows=10, ncols=10,
+                     xmin = st_bbox(coords_buffer)$xmin[[1]],
+                     xmax = st_bbox(coords_buffer)$xmax[[1]],
+                     ymin = st_bbox(coords_buffer)$ymin[[1]],
+                     ymax = st_bbox(coords_buffer)$ymax[[1]])
+    cc = terra::project(rr, 'epsg:4326')
+  }
+  )
 
   # check for empty raster (usually coordinates over ocean)
-  c = terra::global(cropped_raster, fun=mean, na.rm=T)$mean
+  c = tryCatch( {
+    cc = terra::global(cropped_raster, fun=mean, na.rm=T)$mean
+  },
+  error = function(e) {
+    message(e)
+    cc = NA
+  }
+  )
 
   if (is.nan(c)){print('empty raster returned after cropping')}
 
@@ -79,8 +104,13 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   }
 
   print(paste('saving raster to', fdir))
-  terra::writeRaster(cropped_raster, fdir, overwrite=T)
 
+  if (terra::hasValues(cropped_raster)) {
+    terra::writeRaster(cropped_raster, fdir, overwrite=T)
+  } else {
+    cropped_raster = terra::subst(cropped_raster, NA, -9999)
+    terra::writeRaster(cropped_raster, fdir, overwrite=T)
+    }
 
   # extract summary statistics
   if (summary_fun=='mean') {
