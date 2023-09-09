@@ -38,6 +38,7 @@ collector <- function(raster_path, path_to_save, year=NULL, year_var=NULL,
   }
 
   r = terra::rast(raster_path)
+  r = terra::subst(r, -9999, NA) # -9999 denote areas over water
 
   ###################################
   ### --- PROJECTION HANDLING --- ###
