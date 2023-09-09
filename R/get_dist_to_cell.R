@@ -27,7 +27,10 @@ get_dist_to_cell <- function(celldata, path_to_save, k=10, stat='mean', ...) {
   colnames(p) = c("lon", "lat")
 
   print(head(p))
+  print(class(p))
   print(dim(p))
+  print(dim(celldata))
+  print(class(celldata))
   print(length(d$lon))
   print(length(d$lat))
 
