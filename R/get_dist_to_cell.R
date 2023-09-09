@@ -59,6 +59,6 @@ get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
       dist = -9999) # for non-buffer based metrics
   }
 
-  readr::write_csv(e, fdir_csv, col.names=F)
+  readr::write_csv(e, fdir_csv, col_names=F)
 
 }
