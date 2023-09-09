@@ -3,6 +3,7 @@
 #' @param df (data frame) a dataframe downloaded from opencellid
 #' @param path_to_save (char) a path to save procesed data
 #' @param k (int) k for the number of neighbors
+#' @param stat (char) either 'mean' or 'min', which knn dist to return
 #' @param ...
 #'
 #' @return None. Saves files to the 'processed' directory.
@@ -17,12 +18,13 @@
 #'  lon=-1.62, lat=6.7,
 #'  var_name='cropland')
 #'
-get_dist_to_cell <- function(df, path_to_save, k=10, ...) {
+get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
 
   d = list(...)
 
   # generate a point for a site
   p = dplyr::as_tibble(cbind(d$lon, d$lat))
+  colnames(p) = c("lon", "lat")
 
   # find knn
   ns = FNN::get.knnx(data=df, query=p, k=k, algorithm=c("kd_tree"))
@@ -45,11 +47,18 @@ get_dist_to_cell <- function(df, path_to_save, k=10, ...) {
   fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', 'm', '.csv')
 
   # create a dataframe to be saved
-  e <- tibble::tibble(
-    SiteCode = d$site_id,
-    AvgDistance = avg_dist,
-    MinDistance = min_dist)
+  if (stat=='mean') {
+    e <- tibble::tibble(
+      SiteCode = 0,
+      val = avg_dist,
+      dist = -9999) # for non-buffer based metrics
+  } else if (stat=='min') {
+    e <- tibble::tibble(
+      SiteCode = 0,
+      val = min_dist,
+      dist = -9999) # for non-buffer based metrics
+  }
 
-  readr::write_csv(e, fdir_csv)
+  readr::write_csv(e, fdir_csv, colnames=F)
 
 }

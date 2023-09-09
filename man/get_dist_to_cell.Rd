@@ -4,7 +4,7 @@
 \alias{get_dist_to_cell}
 \title{Calculates distance to population center}
 \usage{
-get_dist_to_cell(df, path_to_save, k = 10, ...)
+get_dist_to_cell(df, path_to_save, k = 10, stat = "mean", ...)
 }
 \arguments{
 \item{df}{(data frame) a dataframe downloaded from opencellid}
@@ -12,6 +12,8 @@ get_dist_to_cell(df, path_to_save, k = 10, ...)
 \item{path_to_save}{(char) a path to save procesed data}
 
 \item{k}{(int) k for the number of neighbors}
+
+\item{stat}{(char) either 'mean' or 'min', which knn dist to return}
 
 \item{...}{}
 }
