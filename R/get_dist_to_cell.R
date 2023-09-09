@@ -25,7 +25,7 @@ get_dist_to_cell <- function(df, path_to_save, k=10, ...) {
   p = dplyr::as_tibble(cbind(d$lon, d$lat))
 
   # find knn
-  ns = FNN::get.knnx(data=d, query=p, k=k, algorithm=c("kd_tree"))
+  ns = FNN::get.knnx(data=df, query=p, k=k, algorithm=c("kd_tree"))
 
   # get coordinates of nbrs
   pts = df[ns$nn.index[1,],]
