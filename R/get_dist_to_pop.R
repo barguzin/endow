@@ -1,7 +1,8 @@
 #' Calculates distance to population center
 #'
 #' @param cities_path (char) a path to file with cities
-#' @param path_to_save (char) a path to save procesed data
+#' @param path_to_save (char) a path to save processed data
+#' @param stat (char) type of stat (dist - distance to city, pop - population in city)
 #' @param ...
 #'
 #' @return None. Saves files to the 'processed' directory.
@@ -16,7 +17,7 @@
 #'  lon=-1.62, lat=6.7,
 #'  var_name='cropland')
 #'
-get_dist_to_pop <- function(cities_path, path_to_save, ...) {
+get_dist_to_pop <- function(cities_path, path_to_save, stat='dist', ...) {
 
   d = list(...)
 
@@ -51,11 +52,24 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
   print(length(cp))
 
   # create a dataframe to be saved
-  e <- tibble::tibble(
-    SiteCode = d$site_id,
-    DistancePop = min_dist,
-    CityName = paste(cn), #ifelse(is.null(cn), NA, cn),
-    CityPop = paste(cp)) #ifelse(is.null(cp), NA, cp))
+  if (stat=='dist') {
+    e <- tibble::tibble(
+      SiteCode = 0,
+      val = min_dist,
+      dist = -9999) # for non-buffer based metrics
+  } else if (stat=='pop') {
+    e <- tibble::tibble(
+      SiteCode = 0,
+      val = paste(cp),
+      dist = -9999) # for non-buffer based metrics
+  }
+
+  # create a dataframe to be saved
+  # e <- tibble::tibble(
+  #   SiteCode = d$site_id,
+  #   DistancePop = min_dist,
+  #   CityName = paste(cn), #ifelse(is.null(cn), NA, cn),
+  #   CityPop = paste(cp)) #ifelse(is.null(cp), NA, cp))
 
   #print(paste(dim(e)))
   #e$CityName = as.character(cn)
@@ -63,6 +77,6 @@ get_dist_to_pop <- function(cities_path, path_to_save, ...) {
 
   #colnames(e) = c('SiteCode', 'DistancePop', 'CityName', 'CityPop')
 
-  readr::write_csv(e, fdir_csv)
+  readr::write_csv(e, fdir_csv, col_names=F)
 
 }

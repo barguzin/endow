@@ -4,12 +4,14 @@
 \alias{get_dist_to_pop}
 \title{Calculates distance to population center}
 \usage{
-get_dist_to_pop(cities_path, path_to_save, ...)
+get_dist_to_pop(cities_path, path_to_save, stat = "dist", ...)
 }
 \arguments{
 \item{cities_path}{(char) a path to file with cities}
 
-\item{path_to_save}{(char) a path to save procesed data}
+\item{path_to_save}{(char) a path to save processed data}
+
+\item{stat}{(char) type of stat (dist - distance to city, pop - population in city)}
 
 \item{...}{}
 }
