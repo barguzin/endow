@@ -4,10 +4,10 @@
 \alias{get_dist_to_cell}
 \title{Calculates distance to population center}
 \usage{
-get_dist_to_cell(df, path_to_save, k = 10, stat = "mean", ...)
+get_dist_to_cell(celldata, path_to_save, k = 10, stat = "mean", ...)
 }
 \arguments{
-\item{df}{(data frame) a dataframe downloaded from opencellid}
+\item{celldata}{(data frame) a dataframe downloaded from opencellid}
 
 \item{path_to_save}{(char) a path to save procesed data}
 

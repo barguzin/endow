@@ -1,6 +1,6 @@
 #' Calculates distance to population center
 #'
-#' @param df (data frame) a dataframe downloaded from opencellid
+#' @param celldata (data frame) a dataframe downloaded from opencellid
 #' @param path_to_save (char) a path to save procesed data
 #' @param k (int) k for the number of neighbors
 #' @param stat (char) either 'mean' or 'min', which knn dist to return
@@ -18,7 +18,7 @@
 #'  lon=-1.62, lat=6.7,
 #'  var_name='cropland')
 #'
-get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
+get_dist_to_cell <- function(celldata, path_to_save, k=10, stat='mean', ...) {
 
   d = list(...)
 
@@ -26,13 +26,16 @@ get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
   p = dplyr::as_tibble(cbind(d$lon, d$lat),.name_repair = 'unique')
   colnames(p) = c("lon", "lat")
 
-  print(paste('dims of point', dim(p)))
+  print(head(p))
+  print(dim(p))
+  print(length(d$lon))
+  print(length(d$lat))
 
   # find knn
-  ns = FNN::get.knnx(data=df, query=p, k=k, algorithm=c("kd_tree"))
+  ns = FNN::get.knnx(data=celldata, query=p, k=k, algorithm=c("kd_tree"))
 
   # get coordinates of nbrs
-  pts = df[ns$nn.index[1,],]
+  pts = celldata[ns$nn.index[1,],]
 
   # convert to sf for dist calculations
   pts_geo = sf::st_as_sf(pts, coords=c("lon", "lat"), crs=4326)
