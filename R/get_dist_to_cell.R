@@ -26,6 +26,8 @@ get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
   p = dplyr::as_tibble(cbind(d$lon, d$lat),.name_repair = 'unique')
   colnames(p) = c("lon", "lat")
 
+  print(paste('dims of point', dim(p)))
+
   # find knn
   ns = FNN::get.knnx(data=df, query=p, k=k, algorithm=c("kd_tree"))
 
