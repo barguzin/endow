@@ -23,12 +23,12 @@ get_osm_road_length <- function(path_to_save, ...) {
   buff = make_buffer(make_point(d$site_id, d$lon, d$lat))
 
   # download osm data for a buffer
-  bb = st_bbox(buff)
+  bb = sf::st_bbox(buff)
 
   hwy = bb %>%
-    opq() %>%
-    add_osm_feature(key = 'highway') %>%
-    osmdata_sf()
+    osmdata::opq() %>%
+    osmdata::add_osm_feature(key = 'highway') %>%
+    osmdata::osmdata_sf()
 
   # get the lines out
   lines = hwy$osm_lines
@@ -37,7 +37,7 @@ get_osm_road_length <- function(path_to_save, ...) {
   if (dim(lines)[1]==0) {
     sum_dist = 0
   } else {
-  sum_dist = as.vector(sum(st_length(lines),na.rm=T))
+  sum_dist = as.vector(sum(sf::st_length(lines),na.rm=T))
 }
   # save clipped raster
   if (missing(year)) {
