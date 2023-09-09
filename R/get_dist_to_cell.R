@@ -23,7 +23,7 @@ get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
   d = list(...)
 
   # generate a point for a site
-  p = dplyr::as_tibble(cbind(d$lon, d$lat))
+  p = dplyr::as_tibble(cbind(d$lon, d$lat),.name_repair = 'unique')
   colnames(p) = c("lon", "lat")
 
   # find knn
@@ -59,6 +59,6 @@ get_dist_to_cell <- function(df, path_to_save, k=10, stat='mean', ...) {
       dist = -9999) # for non-buffer based metrics
   }
 
-  readr::write_csv(e, fdir_csv, colnames=F)
+  readr::write_csv(e, fdir_csv, col.names=F)
 
 }
