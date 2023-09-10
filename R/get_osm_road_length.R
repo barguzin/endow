@@ -40,22 +40,12 @@ get_osm_road_length <- function(path_to_save, ...) {
   sum_dist = as.vector(sum(sf::st_length(lines),na.rm=T))
 }
   # save clipped raster
-  if (missing(year)) {
-    print('No year supplied to function.')
-    vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
-  } else {
-    print('non missing year')
-    vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/', year, '/')
-  }
+  vdir = paste0(path_to_save, d$site_id, '/', d$var_name, '/')
 
   print(paste('creating directory in', vdir))
   dir.create(vdir, recursive = T)
 
-  if (missing(year)) {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
-  } else {
-    fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '_', year, '.csv')
-  }
+  fdir_csv = paste0(vdir, d$site_id, '_', d$var_name, '_', d$dist, 'm', '.csv')
 
   # create a dataframe to be saved
   e <- tibble::tibble(
