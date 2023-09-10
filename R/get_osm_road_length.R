@@ -34,7 +34,7 @@ get_osm_road_length <- function(path_to_save, ...) {
   lines = hwy$osm_lines
 
   # calculate dist
-  if (dim(lines)[1]==0) {
+  if (is.null(lines)) {
     sum_dist = 0
   } else {
   sum_dist = as.vector(sum(sf::st_length(lines),na.rm=T))
