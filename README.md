@@ -33,12 +33,14 @@ flowchart LR
     site[site location]
     crop[cropped raster]
     summ[.csv]
+    repo[site <br> reports]
 
     site--site_id, lon, lat---pnt--dist---buff--aggregate---summ
 
     rast--crop--> crop
     buff--crop--> crop
-    crop-->summ
+    crop--aggregate-->summ
+    summ-->repo
 
 
 ```
